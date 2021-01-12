@@ -11,15 +11,13 @@ include - Header files
 src - Cpp files
 unittest - Tests
 
-
-
-
 #### Setup instructions
 Dependencies:
- - CMake (>= 3.12.0)
- - C++17 Required
+ - CMake [download](https://cmake.org/download/) for cross-platform compiler project generation.
+ - C++17 Required, e.g. [Visual Studio](https://visualstudio.microsoft.com/downloads/)
 
 1. git clone https://gitlab.liu.se/-/ide/project/tnm094-labs/particlesystem
-2. Open CMake (we recommend using the GUI here), enter the source path and the preferred build directory (outside the inviwo directory!) and hit configure. 
+2. Open CMake (we recommend using the GUI here), enter the source path and the preferred build directory (outside the source directory!) and hit configure. 
 3. Hit Generate and then Open Project to open the project in your IDE.
+4. Build and run the ParticleSystem executable.
 
