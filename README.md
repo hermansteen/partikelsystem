@@ -1,4 +1,3 @@
-
 ## TNM094 Labs - Particle System
 
 A minimal particle system acting as a foundation for the course labs.
@@ -6,14 +5,14 @@ A small graphical interface is provided for visually editing parameters.
 
 #### Folder structure
 
-ext - External dependencies
-include - Header files
-src - Cpp files
-unittest - Tests
+- /ext: External dependencies
+- /include: Header files
+- /src: Cpp files
+- /unittest: Examples of tests
 
 #### Setup instructions
 Dependencies:
- - CMake [download](https://cmake.org/download/) for cross-platform compiler project generation.
+ - [CMake](https://cmake.org/download/) for cross-platform compiler project generation.
  - C++17 Required, e.g. [Visual Studio](https://visualstudio.microsoft.com/downloads/)
 
 1. git clone https://gitlab.liu.se/tnm094-labs/particlesystem.git
