@@ -1,6 +1,7 @@
 #ifndef __RENDERING_H__
 #define __RENDERING_H__
 
+#include "vec2.h"
 #include "color.h"
 #include <string>
 #include <vector>
@@ -106,47 +107,34 @@ void setBackgroundColor(float r, float g, float b);
 [[ nodiscard ]] float beginFrame();
 
 /**
- * Updates the internal list of particles that will be rendered in the next #render call.
- * Unless this function is called again, the same values are used in all subsequent calls
- * until a new call to updateParticles is made.
+ * Renders a list of particles.
  * 
  * \param particles The information about the particles that are rendered in the next call
  *        to the render function
  * \pre The createWindow function has been called exactly once in the application
  * \pre The beginFrame has been called since the beginning of this frame
  */
-void updateParticles(const std::vector<ParticleInfo>& particles);
+void renderParticles(const std::vector<ParticleInfo>& particles);
 
 /**
- * Updates the internal list of emitters that will be rendered in the next #render call.
- * Unless this function is called again, the same values are used in all subsequent calls
- * until a new call to updateParticles is made.
+ * Renders list of emitters.
  *
  * \param emitters The information about the emitters that are rendered in the next call
  *        to the render function
  * \pre The createWindow function has been called exactly once in the application
  * \pre The beginFrame has been called since the beginning of this frame
  */
-void updateEmitters(const std::vector<EmitterInfo>& emitters);
+void renderEmitters(const std::vector<EmitterInfo>& emitters);
 
 /**
- * Updates the internal list of forces that will be rendered in the next #render call.
- * Unless this function is called again, the same values are used in all subsequent calls
- * until a new call to updateParticles is made.
+ * Renders list of forces.
  *
  * \param forces The information about the forces that are rendered in the next call to
  *        the render function
  * \pre The createWindow function has been called exactly once in the application
  * \pre The beginFrame has been called since the beginning of this frame
  */
-void updateForces(const std::vector<ForceInfo>& forces);
-
-/**
- * This function renders all of the particles, emitters, and forces that were passed in
- * the last call to updateParticles. updateEmitters, and updateForces respectively. It
- * also renders the user interface elements to the screen
- */
-void render();
+void renderForces(const std::vector<ForceInfo>& forces);
 
 /**
  * Finalizes the current frame and swaps the front and back buffers for double buffering.
@@ -160,246 +148,93 @@ void render();
 } // namespace rendering
 
 /**
- * This namespace contains helper classes that can be used to create user interfaces. Most
- * of the classes operate in a similar fashion; you create an instance of the class for
- * the duration of the application. In the render loop you call the objects render method.
+ * This namespace contains helper functions that can be used to draw user interfaces. Most
+ * of the functions operate in a similar fashion; within the ui::begin() and ui::end() you
+ * the functions you need to create your UI.
  * In most cases the function returns \c true if the user interacted with the UI (pressed
  * a button, changed a value, etc) and the variable(s) passed as parameters to the
  * function are changed if the user interacted with the element).
  *
- * The one exception to this is the Group object, which will create a group in the
- * beginning of its lifetime and will close the group at the end of the lifetime.
- * For example:
- * ui::Text t;
- * ui::Button b("bar");
- * {
- *   ui::Group g("Foo");
- *   t.render("Foo text");
- * }
- * {
- *   ui::Group g("Bar");
- *   bool pressed = b.render();
- * }
+ * The one exception to this are the Group functions, which will create a group by calling
+ * beginGroup() and will end the group by calling endGroup()
  *
- * Will create two separate groups, Foo and Bar
  */
 namespace ui {
 
-/// This UI element shows a simple text in the user interface
-class Text {
-public:
-    /**
-     * Renders the provided \p text to the UI
-     *
-     * \param The text that should be rendered
-     *
-     * \pre \p text must not be empty
-     */
-    void render(std::string text);
-};
+void begin();
+void end();
+
+
+
 
 /**
- * A group that lives for the lifetime of this object with the provided name \p text. You
- * can create a local variable in the beginning of a scope and simply render UI elements
- * in the scope.
- */
-class Group {
-public:
-    /**
-     * Creates the group with a specific name \p text.
-     *
-     * \param text The name of the group
-     * \pre \p text must not be empty
-     */
-    Group(std::string text);
-    ~Group();
-};
+* This UI element shows a simple colored text in the user interface
+* 
+* \param text The text that should be rendered
+* \param color Color of the text [optional] (default is white)
+* \pre \p text must not be empty
+*/
+void text(const char* text, Color color = {1,1,1});
 
-/// A slider UI element that can be moved between a given minimum and maximum value. The 
-/// values of the slider are floating point values.
-class FloatSlider {
-public:
-    /**
-     * Creates the slider with the provided \p text and the minimum value of \p minValue
-     * and maximum value of \p maxValue.
-     *
-     * \pre \p text must not be a nullptr
-     * \pre \p text must not be empty
-     * \pre \p minValue must be smaller than \p maxValue
-     */
-    FloatSlider(const char* text, float minValue, float maxValue);
+/**
+* * Draws a slider with the provided \p label and the minimum value of \p minValue
+* and maximum value of \p maxValue.
+* 
+* If the user changed the value for the slider, the return value will be
+* \c true and \p value contains the changed value. If the user
+* did not interact with the slider, the value passed to \p value will not be
+* modified.
+* 
+* \pre \p label must not be a nullptr
+* \pre \p label must not be empty
+* \pre \p minValue must be smaller than \p maxValue
+*
+* \param value The in/out parameter for the value displayed by the slider
+* \return \c true if the user interacted with the slider, \c false otherwise
+*/
+bool sliderFloat(const char* label, float& value, float minValue, float maxValue);
+bool sliderInt(const char* label, int& value, int minValue, int maxValue);
+bool sliderVec2(const char* label, vec2& value, float minValue, float maxValue);
 
-    /**
-     * Renders the slider into the UI. If the user changed the value for the slider, the
-     * return value will be \c true and \p value contains the changed value. If the user
-     * did not interact with the slider, the value passed to \p value will not be
-     * modified.
-     *
-     * \param value The in/out parameter for the value displayed by the slider
-     * \return \c true if the user interacted with the slider, \c false otherwise
-     */
-    bool render(float& value);
+/**
+* Draws a color picker into the UI. If the user changed the color, the return
+* value will be \c true and \p r, \p g, and \p b contain the color components of the
+* new color. If the user did not interact with the picker, the passed color will not
+* be modified.
+*
+* \pre \p label must not be a nullptr
+* \pre \p label must not be empty
+* \param color The in/out parameter for the color, all components (r,g,b) operate in the range [0, 1]
+* \return \c true if the user picked a new color, \c false otherwise
+*/
+bool colorPicker(const char* label, Color& color);
 
-private:
-    /// The text displayed next to the slider
-    const char* _text;
-    /// The minimum value allowed by the slider
-    float _minValue;
-    /// The maximum value allowed by the slider
-    float _maxValue;
-};
 
-/// A slider UI element that can be moved between a given minimum and maximum value. The
-/// values of the slider are integral values.
-class IntSlider {
-public:
-    /**
-     * Creates the slider with the provided \p text and the minimum value of \p minValue
-     * and maximum value of \p maxValue.
-     *
-     * \pre \p text must not be a nullptr
-     * \pre \p text must not be empty
-     * \pre \p minValue must be smaller than \p maxValue
-     */
-    IntSlider(const char* text, int minValue, int maxValue);
+/**
+* Draws a new button with the provided \p label. If the user pressed the button, this function returns
+* \c true, otherwise, \c false is returned.
+*
+* \param label The text that is written inside the button
+* \pre \p label must not be a nullptr
+* \pre \p label must not be empty
+*
+* \return \c true if the user pressed the button, \c false otherwise
+*/
+bool button(const char* label);
 
-    /**
-     * Renders the slider into the UI. If the user changed the value for the slider, the
-     * return value will be \c true and \p value contains the changed value. If the user
-     * did not interact with the slider, the value passed to \p value will not be
-     * modified.
-     *
-     * \param value The in/out parameter for the value displayed by the slider
-     * \return \c true if the user interacted with the slider, \c false otherwise
-     */
-    bool render(int& value);
 
-private:
-    /// The text displayed next to the slider
-    const char* _text;
-    /// The minimum value allowed by the slider
-    int _minValue;
-    /// The maximum value allowed by the slider
-    int _maxValue;
-};
+bool checkbox(const char* label, bool& value);
 
-/// A double slider UI element that can be moved between a given minimum and maximum
-/// value. This element shows two sliders that are each showing floating point values.
-class Vec2Slider {
-public:
-    /**
-     * Creates the slider with the provided \p text and the minimum value of \p minValue
-     * and maximum value of \p maxValue. The same \p minValue and \p maxValue are used for
-     * both sliders.
-     *
-     * \pre \p text must not be a nullptr
-     * \pre \p text must not be empty
-     * \pre \p minValue must be smaller than \p maxValue
-     */
-    Vec2Slider(const char* text, float minValue, float maxValue);
-
-    /**
-     * Renders the slider into the UI. If the user changed the value for the slider, the
-     * return value will be \c true and \p value contains the changed value. If the user
-     * did not interact with the slider, the value passed to \p value will not be
-     * modified.
-     *
-     * \param value The in/out parameter for the value displayed by the slider
-     * \return \c true if the user interacted with the slider, \c false otherwise
-     */
-    bool render(float& x, float& y);
-
-private:
-    /// The text displayed next to the slider
-    const char* _text;
-    /// The minimum value allowed by the slider
-    float _minValue;
-    /// The maximum value allowed by the slider
-    float _maxValue;
-};
-
-/// A UI element that provides a way to select colors using an easier to use interface.
-class Color {
-public:
-    /**
-     * Creates the color picker ui element the provided \p text
-     *
-     * \pre \p text must not be a nullptr
-     * \pre \p text must not be empty
-     */
-    Color(const char* text);
-
-    /**
-     * Renders the color picker into the UI. If the user changed the color, the return
-     * value will be \c true and \p r, \p g, and \p b contain the color components of the
-     * new color. If the user did not interact with the picker, the values passed to
-     * \p r, \p g, and \p b will not be modified.
-     *
-     * \param r The in/out parameter for the color's red component in the range [0, 1]
-     * \param g The in/out parameter for the color's green component in the range [0, 1]
-     * \param b The in/out parameter for the color's blue component in the range [0, 1]
-     * \return \c true if the user picked a new color, \c false otherwise
-     */
-    bool render(float& r, float& g, float& b);
-
-private:
-    /// The text that is shown alongside the color picker
-    const char* _text;
-};
-
-/// This UI element represents a button that can be clicked by the user.
-class Button {
-public:
-    /**
-     * Creates a new button with the provided \p text.
-     *
-     * \param text The text that is written inside the button
-     * \pre \p text must not be a nullptr
-     * \pre \p text must not be empty
-     */
-    Button(const char* text);
-
-    /**
-     * Renders the button to the UI. If the user pressed the button, this function returns
-     * \c true, otherwise, \c false is returned.
-     *
-     * \return \c true if the user pressed the button, \c false otherwise
-     */
-    [[ nodiscard ]] bool render();
-
-private:
-    /// The text that is shown inside the button
-    const char* _text;
-};
-
-/// This UI element represents a checkbox that can be selected or deselected by the user
-class Checkbox {
-public:
-    /**
-     * Creates the checkbox with the provided \p text.
-     *
-     * \param text The text that is shown next to the checkbox
-     * \pre \p text must not be a nullptr
-     * \pre \p text must not be empty
-     */
-    Checkbox(const char* text);
-
-    /**
-     * Renders the checkbox to the UI. If the user changed the state of the checkbox, 
-     * this method returns \c true and the new state of the checkbox is writted into the
-     * \p value parameter. If the user did not change the state of the checkbox, this
-     * method returns \c false and the value passed to \p value remains unchanged.
-     *
-     * \param value The in/out parameter that represents the state whether the checkbox is
-     *        selected or not
-     * \return \c true if the user changed the state of the checkbox, \c false otherwise
-     */
-    bool render(bool& value);
-
-private:
-    /// The text that is shown next to the checkbox
-    const char* _text;
-};
+/**
+* Creates a group with a specific name \p label.
+* Should be terminated with endGroup.
+*
+* \param label The name of the group
+* \pre \p label must not be a nullptr
+* \pre \p label must not be empty
+*/
+void beginGroup(const char* label);
+void endGroup();
 
 } // namespace ui
 

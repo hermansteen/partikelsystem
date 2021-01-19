@@ -6,21 +6,31 @@ int main(int, char**) {
     rendering::createWindow();
 
     ParticleSystem particleSystem;
+
     bool isRunning = true;
     while (isRunning) {
         const float dt = rendering::beginFrame();
+        float speed = 1.0f;
 
-        // @TODO: Add your calls that should happen every frame (for example UI) here
+        {
+            ui::begin();
+            // @TODO: Add UI calls within ui::begin() and ui::end() here
+            
+            // @TODO: Replace this example code with your own UI elements
+            ui::text("I'm a text!");
+            ui::sliderFloat("simulation speed", speed, 0.001f, 10.0f);
+            if (ui::button("kill program")) {
+                isRunning = false;
+            }
 
+            ui::end();
+        }
 
-        // Should be no need to change the following code
-        particleSystem.update(dt);
-        rendering::updateParticles(particleSystem.particleInformation());
-        rendering::updateForces(particleSystem.forcesInformation());
-        rendering::updateEmitters(particleSystem.emitterInformation());
+        particleSystem.update(dt * speed);
 
-        rendering::render();
-        isRunning = rendering::endFrame();
+        particleSystem.render();
+
+        isRunning &= rendering::endFrame();
     }
 
     rendering::destroyWindow();

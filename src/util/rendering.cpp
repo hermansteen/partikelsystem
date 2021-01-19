@@ -53,8 +53,6 @@ struct Renderable {
     GLuint vertexShader = 0;
     GLuint geometryShader = 0;
     GLuint fragmentShader = 0;
-
-    int number = 0;
 };
 
 Renderable _particles;
@@ -795,14 +793,6 @@ float beginFrame() {
     // Query the events from the operating system, such as input from mouse or keyboards
     glfwPollEvents();
 
-    // Signal to ImGui that we are starting with a new frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    // The start of a new (and only) window
-    ImGui::Begin("UI");
-
     // Clear the rendering buffer with the selected background color
     glClearColor(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -811,114 +801,79 @@ float beginFrame() {
     return static_cast<float>(dt);
 }
 
-void updateParticles(const std::vector<ParticleInfo>& ps) {
+void renderParticles(const std::vector<ParticleInfo>& particleData) {
     ZoneScoped
     checkOpenGLError("updateParticles (begin)");
 
+    assert(_particles.vao);
     assert(_particles.vbo);
+    assert(_particles.shaderProgram);
 
     // Upload the passed particle information to the GPU
     glBindBuffer(GL_ARRAY_BUFFER, _particles.vbo);
-    glBufferData(
-        GL_ARRAY_BUFFER, ps.size() * sizeof(ParticleInfo), ps.data(), GL_DYNAMIC_DRAW
-    );
-    _particles.number = static_cast<int>(ps.size());
-    
+    glBufferData(GL_ARRAY_BUFFER, particleData.size() * sizeof(ParticleInfo), particleData.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     // Plot the number of particles and make them available through Tracy
     TracyPlot("Particles", int64_t(_particles.number));
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(_particles.vao);
+    glUseProgram(_particles.shaderProgram);
+    glDrawArrays(GL_POINTS, 0, static_cast<int>(particleData.size()));
+    glUseProgram(0);
+    glBindVertexArray(0);
+
     checkOpenGLError("updateParticles (end)");
 }
 
-void updateEmitters(const std::vector<EmitterInfo>& es) {
+void renderEmitters(const std::vector<EmitterInfo>& emitterData) {
     ZoneScoped
     checkOpenGLError("updateEmitters (begin)");
 
+    assert(_emitters.vao);
     assert(_emitters.vbo);
+    assert(_emitters.shaderProgram);
 
     // Upload the passed emitter information to the GPU
     glBindBuffer(GL_ARRAY_BUFFER, _emitters.vbo);
-    glBufferData(
-        GL_ARRAY_BUFFER, es.size() * sizeof(EmitterInfo), es.data(), GL_DYNAMIC_DRAW
-    );
-    _emitters.number = static_cast<int>(es.size());
+    glBufferData(GL_ARRAY_BUFFER, emitterData.size() * sizeof(EmitterInfo), emitterData.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Plot the number of emitters and make them available through Tracy
     TracyPlot("Emitters", int64_t(_emitters.number));
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(_emitters.vao);
+    glUseProgram(_emitters.shaderProgram);
+    glDrawArrays(GL_POINTS, 0, static_cast<int>(emitterData.size()));
+    glUseProgram(0);
+    glBindVertexArray(0);
+
     checkOpenGLError("updateEmitters (end)");
 }
 
-void updateForces(const std::vector<ForceInfo>& fs) {
+void renderForces(const std::vector<ForceInfo>& forceData) {
     ZoneScoped
-    checkOpenGLError("updateForces (begin)");
+    checkOpenGLError("renderForces (begin)");
 
+    assert(_forces.vao);
     assert(_forces.vbo);
+    assert(_forces.shaderProgram);
 
     // Upload the passed forces information to the GPU
     glBindBuffer(GL_ARRAY_BUFFER, _forces.vbo);
-    glBufferData(
-        GL_ARRAY_BUFFER, fs.size() * sizeof(ForceInfo), fs.data(), GL_DYNAMIC_DRAW
-    );
-    _forces.number = static_cast<int>(fs.size());
+    glBufferData(GL_ARRAY_BUFFER, forceData.size() * sizeof(ForceInfo), forceData.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);    
 
     // Plot the number of forces and make them available through Tracy
-    TracyPlot("Forces", int64_t(_forces.number));
+    TracyPlot("Forces", int64_t(forceData.size()));
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    checkOpenGLError("updateForces (end)");
-}
+    glBindVertexArray(_forces.vao);
+    glUseProgram(_forces.shaderProgram);
+    glDrawArrays(GL_POINTS, 0, static_cast<int>(forceData.size()));
+    glUseProgram(0);
+    glBindVertexArray(0);
 
-void render() {
-    ZoneScoped
-    checkOpenGLError("render (begin)");
-
-    // Render the particles
-    if (_particles.number > 0) {
-        assert(_particles.vao);
-        assert(_particles.vbo);
-        assert(_particles.shaderProgram);
-
-        ZoneScopedN("Particles")
-        glBindVertexArray(_particles.vao);
-        glUseProgram(_particles.shaderProgram);
-        glDrawArrays(GL_POINTS, 0, _particles.number);
-    }
-
-    // Render the emitters
-    if (_emitters.number > 0) {
-        assert(_emitters.vao);
-        assert(_emitters.vbo);
-        assert(_emitters.shaderProgram);
-
-        ZoneScopedN("Emitters")
-        glBindVertexArray(_emitters.vao);
-        glUseProgram(_emitters.shaderProgram);
-        glDrawArrays(GL_POINTS, 0, _emitters.number);
-    }
-
-    // Render the forces
-    if (_forces.number > 0) {
-        assert(_forces.vao);
-        assert(_forces.vbo);
-        assert(_forces.shaderProgram);
-
-        ZoneScopedN("Forces")
-        glBindVertexArray(_forces.vao);
-        glUseProgram(_forces.shaderProgram);
-        glDrawArrays(GL_POINTS, 0, _forces.number);
-    }
-    checkOpenGLError("render (end)");
-
-    {
-        // Finalize the ImGui ui elements and render them to the screen
-        ZoneScopedN("Render UI")
-            ImGui::End();
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    }
+    checkOpenGLError("renderForces (end)");
 }
 
 bool endFrame() {
@@ -943,115 +898,79 @@ bool endFrame() {
 
 namespace ui {
 
-void Text::render(std::string text) {
-    ZoneScoped
-    assert(!text.empty());
-    ImGui::Text("%s", text.c_str());
+void begin() {
+    // Signal to ImGui that we are starting with a new frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    // The start of a new (and only) window
+    ImGui::Begin("UI");
 }
 
-Group::Group(std::string text) {
-    ZoneScoped
-    assert(!text.empty());
-    ImGui::PushID(text.c_str());
-    ImGui::Text("%s", text.c_str());
+void end() {
+    // Finalize the ImGui ui elements and render them to the screen
+    ZoneScopedN("Render UI")
+    ImGui::End();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-Group::~Group() {
+void text(const char* text, Color color) {
+    assert(text);
+    ZoneScoped
+    ImGui::TextColored({color.r, color.g, color.b, 1.0f}, "%s", text);
+}
+
+bool sliderFloat(const char* label, float& value, float minValue, float maxValue) {
+    assert(label);
+    ZoneScoped
+    return ImGui::SliderFloat(label, &value, minValue, maxValue);
+}
+
+bool sliderInt(const char* label, int& value, int minValue, int maxValue) {
+    assert(label);
+    ZoneScoped
+    return ImGui::SliderInt(label, &value, minValue, maxValue);
+}
+
+bool sliderVec2(const char* label, vec2& value, float minValue, float maxValue) {
+    assert(label);
+    ZoneScoped
+    const float speed = (maxValue - minValue) / 2000.f;
+    float* v = &value.x;
+    return ImGui::DragFloat2(label, v, speed, minValue, maxValue);
+}
+
+bool colorPicker(const char* label, Color& color) {
+    assert(label);
+    ZoneScoped
+    float* v = &color.r;
+    return ImGui::ColorEdit3(label, v);
+}
+
+bool button(const char* label) {
+    assert(label);
+    ZoneScoped
+    return ImGui::Button(label);
+}
+
+bool checkbox(const char* label, bool& value) {
+    assert(label);
+    ZoneScoped
+    return ImGui::Checkbox(label, &value);
+}
+
+void beginGroup(const char* label) {
+    ZoneScoped
+    assert(label);
+    ImGui::PushID(label);
+    ImGui::Text("%s", label);
+}
+
+void endGroup() {
     ImGui::Separator();
     ImGui::PopID();
-}
-
-FloatSlider::FloatSlider(const char* text, float minValue, float maxValue)
-    : _text(text)
-    , _minValue(minValue)
-    , _maxValue(maxValue)
-{
-    assert(_text != nullptr);
-    assert(strlen(_text) > 0);
-    assert(minValue < maxValue);
-}
-
-bool FloatSlider::render(float& value) {
-    ZoneScoped
-    return ImGui::SliderFloat(_text, &value, _minValue, _maxValue);
-}
-
-IntSlider::IntSlider(const char* text, int minValue, int maxValue)
-    : _text(std::move(text))
-    , _minValue(minValue)
-    , _maxValue(maxValue)
-{
-    assert(_text != nullptr);
-    assert(strlen(_text) > 0);
-    assert(minValue < maxValue);
-}
-
-bool IntSlider::render(int& value) {
-    ZoneScoped
-    return ImGui::SliderInt(_text, &value, _minValue, _maxValue);
-}
-
-Vec2Slider::Vec2Slider(const char* text, float minValue, float maxValue)
-    : _text(std::move(text))
-    , _minValue(minValue)
-    , _maxValue(maxValue)
-{
-    assert(_text != nullptr);
-    assert(strlen(_text) > 0);
-    assert(minValue < maxValue);
-}
-
-bool Vec2Slider::render(float& x, float& y) {
-    ZoneScoped
-
-    const float delta = (_maxValue - _minValue) / 2000.f;
-    float v[2] = { x, y };
-    const bool changed = ImGui::DragFloat2(_text, v, delta, _minValue, _maxValue);
-    x = v[0];
-    y = v[1];
-    return changed;
-}
-
-Color::Color(const char* text)
-    : _text(text)
-{
-    assert(_text != nullptr);
-    assert(strlen(_text) > 0);
-}
-
-bool Color::render(float& r, float& g, float& b) {
-    ZoneScoped
-
-    float v[3] = { r, g, b };
-    const bool changed = ImGui::ColorEdit3(_text, v);
-    r = v[0];
-    g = v[1];
-    b = v[2];
-    return changed;
-}
-
-Button::Button(const char* text)
-    : _text(std::move(text))
-{
-    assert(_text != nullptr);
-    assert(strlen(_text) > 0);
-}
-
-bool Button::render() {
-    ZoneScoped
-    return ImGui::Button(_text);
-}
-
-Checkbox::Checkbox(const char* text)
-    : _text(std::move(text))
-{
-    assert(_text != nullptr);
-    assert(strlen(_text) > 0);
-}
-
-bool Checkbox::render(bool& value) {
-    ZoneScoped
-    return ImGui::Checkbox(_text, &value);
 }
 
 } // namespace ui
