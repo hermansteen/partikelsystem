@@ -7,10 +7,8 @@ struct vec2 {
     float x = 0.f;
     float y = 0.f;
 
-    constexpr vec2() = default;
-    constexpr vec2(float x, float y) : x(x), y(y) {}
-    constexpr vec2(const vec2& rhs) noexcept : x(rhs.x), y(rhs.y) {}
-    constexpr vec2(vec2&& rhs) noexcept : x(rhs.x), y(rhs.y) { rhs.x = 0.f; rhs.y = 0.f; }
+    constexpr vec2() noexcept = default;
+    constexpr vec2(float x, float y) noexcept : x(x), y(y) {}
 
     inline constexpr vec2 operator+(const vec2& rhs) const noexcept {
         return vec2{ x + rhs.x, y + rhs.y };
@@ -42,18 +40,6 @@ struct vec2 {
     
     inline constexpr vec2 operator/(float rhs) const noexcept {
         return vec2{ x / rhs, y / rhs };
-    }
-
-    inline vec2& operator=(const vec2& rhs) {
-        x = rhs.x;
-        y = rhs.y;
-        return *this;
-    }
-
-    inline vec2& operator=(vec2&& rhs) noexcept {
-        x = rhs.x;
-        y = rhs.y;
-        return *this;
     }
 
     inline constexpr vec2& operator+=(const vec2& rhs) noexcept {

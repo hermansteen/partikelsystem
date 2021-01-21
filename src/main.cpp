@@ -6,21 +6,29 @@ int main(int, char**) {
     rendering::createWindow();
 
     ParticleSystem particleSystem;
+
     bool isRunning = true;
     while (isRunning) {
         const float dt = rendering::beginFrame();
+        float speed = 1.0f;
 
-        // @TODO: Add your calls that should happen every frame (for example UI) here
+        {
+            ui::GuiScope ui; // Initiates and finalizes UI rendering upon construction/destruction
+            // @TODO: Add UI calls
+            
+            // @TODO: Replace this example code with your own UI elements
+            ui::text("I'm text!");
+            ui::sliderFloat("Simulation speed", speed, 0.001f, 10.0f);
+            if (ui::button("Close application")) {
+                isRunning = false;
+            }
+        }
 
+        particleSystem.update(dt * speed);
 
-        // Should be no need to change the following code
-        particleSystem.update(dt);
-        rendering::updateParticles(particleSystem.particleInformation());
-        rendering::updateForces(particleSystem.forcesInformation());
-        rendering::updateEmitters(particleSystem.emitterInformation());
+        particleSystem.render();
 
-        rendering::render();
-        isRunning = rendering::endFrame();
+        isRunning &= rendering::endFrame();
     }
 
     rendering::destroyWindow();
