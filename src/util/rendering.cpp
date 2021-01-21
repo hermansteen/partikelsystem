@@ -898,7 +898,8 @@ bool endFrame() {
 
 namespace ui {
 
-void begin() {
+
+GuiScope::GuiScope() {
     // Signal to ImGui that we are starting with a new frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -908,7 +909,7 @@ void begin() {
     ImGui::Begin("UI");
 }
 
-void end() {
+GuiScope::~GuiScope() {
     // Finalize the ImGui ui elements and render them to the screen
     ZoneScopedN("Render UI")
     ImGui::End();

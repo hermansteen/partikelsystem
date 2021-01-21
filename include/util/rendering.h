@@ -161,8 +161,21 @@ void renderForces(const std::vector<ForceInfo>& forces);
  */
 namespace ui {
 
-void begin();
-void end();
+/**
+ * \brief RAII object for drawing ImGUI components.
+ * On construction: Tells ImGui that we are starting a new frame . 
+ * On destruction: Finalizes the ImGui UI elements and renders them to the screen.
+ */
+struct GuiScope {
+    GuiScope();
+    // Disallow copying and assignment
+    GuiScope(GuiScope const&) = delete;
+    GuiScope& operator=(GuiScope const& that) = delete;
+    GuiScope(GuiScope&& rhs) = delete;
+    GuiScope& operator=(GuiScope&& that) = delete;
+
+    ~GuiScope();
+};
 
 
 

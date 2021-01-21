@@ -13,17 +13,15 @@ int main(int, char**) {
         float speed = 1.0f;
 
         {
-            ui::begin();
-            // @TODO: Add UI calls within ui::begin() and ui::end() here
+            ui::GuiScope ui; // Initiates and finalizes UI rendering upon construction/destruction
+            // @TODO: Add UI calls
             
             // @TODO: Replace this example code with your own UI elements
-            ui::text("I'm a text!");
-            ui::sliderFloat("simulation speed", speed, 0.001f, 10.0f);
-            if (ui::button("kill program")) {
+            ui::text("I'm text!");
+            ui::sliderFloat("Simulation speed", speed, 0.001f, 10.0f);
+            if (ui::button("Close application")) {
                 isRunning = false;
             }
-
-            ui::end();
         }
 
         particleSystem.update(dt * speed);
