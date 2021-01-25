@@ -276,7 +276,7 @@ void createParticleGLObjects(GLuint& vao, GLuint& vbo) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(rendering::ParticleInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ParticleInfo, x))
+        reinterpret_cast<GLvoid*>(offsetof(rendering::ParticleInfo, position))
     );
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(rendering::ParticleInfo),
@@ -449,7 +449,7 @@ void createEmitterGLObjects(GLuint& vao, GLuint& vbo) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(rendering::EmitterInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::EmitterInfo, x))
+        reinterpret_cast<GLvoid*>(offsetof(rendering::EmitterInfo, position))
     );
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(rendering::EmitterInfo),
@@ -617,7 +617,7 @@ void createForceGLObjects(GLuint& vao, GLuint& vbo) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(rendering::ForceInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ForceInfo, x))
+        reinterpret_cast<GLvoid*>(offsetof(rendering::ForceInfo, position))
     );
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(rendering::ForceInfo),
