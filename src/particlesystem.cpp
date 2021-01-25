@@ -13,8 +13,7 @@ ParticleSystem::ParticleSystem() {
 
 }
 
-void ParticleSystem::update(float dt) {
-    (void)dt;
+void ParticleSystem::update([[maybe_unused]] float dt) {
     // @TODO: Update the state of the particle system, move particles forwards, spawn new
     // particles, destroy old particles, and apply effects
 }
