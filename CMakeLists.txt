@@ -100,6 +100,10 @@ source_group("Header Files" FILES ${HEADER_FILES})
 target_include_directories(ParticleSystem PRIVATE "include")
 target_link_libraries(ParticleSystem PUBLIC tracy PRIVATE glad glfw imgui project_options project_warnings)
 
+if(MSVC)
+    set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ParticleSystem)
+endif()
+
 ###
 # Unit tests
 ###
