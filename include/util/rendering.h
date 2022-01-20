@@ -3,7 +3,6 @@
 
 #include "vec2.h"
 #include "color.h"
-#include <string>
 #include <vector>
 
 /// This namespace contains objects that are helper functions that support the rendering

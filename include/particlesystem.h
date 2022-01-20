@@ -4,7 +4,6 @@
 #include "util/color.h"
 #include "util/rendering.h"
 #include "util/vec2.h"
-#include <vector>
 
 class ParticleSystem {
 public:
