@@ -30,16 +30,6 @@ TEST_CASE("Constructor", "[vec2]") {
         REQUIRE(v.x == v2.x);
         REQUIRE(v.y == v2.y);
     }
-
-    {
-        // Move constructor
-        vec2 v4(1.f, 2.f);
-        vec2 v5(std::move(v4));
-        REQUIRE(v5.x == 1.f);
-        REQUIRE(v5.y == 2.f);
-        REQUIRE(v4.x == 0.f);
-        REQUIRE(v4.y == 0.f);
-    }
 }
 
 TEST_CASE("Assignment", "[vec2]") {

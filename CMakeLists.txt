@@ -80,29 +80,25 @@ set_property(TARGET glad PROPERTY FOLDER "External")
 ###
 # Particle System Library
 ###
+
 set(HEADER_FILES
   include/particlesystem.h
   include/util/rendering.h
 )
 
 set(SOURCE_FILES
-    src/main.cpp
-    src/particlesystem.cpp
-    src/util/rendering.cpp
+  src/particlesystem.cpp
+  src/util/rendering.cpp
 )
 
-add_executable(ParticleSystem
-    ${SOURCE_FILES}
-    ${HEADER_FILES}
+add_library(ParticleSystem
+  ${SOURCE_FILES}
+  ${HEADER_FILES}
 )
 
 source_group("Header Files" FILES ${HEADER_FILES})
 target_include_directories(ParticleSystem PRIVATE "include")
 target_link_libraries(ParticleSystem PUBLIC tracy PRIVATE glad glfw imgui project_options project_warnings)
-
-if(MSVC)
-    set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ParticleSystem)
-endif()
 
 ###
 # Unit tests
@@ -113,7 +109,21 @@ add_executable(unittest
   unittest/vec2.cpp
 )
 target_include_directories(unittest PRIVATE "include")
-target_link_libraries(unittest PUBLIC catch2 PRIVATE project_options project_warnings)
+target_link_libraries(unittest PUBLIC catch2 PRIVATE ParticleSystem project_options project_warnings)
+
+###
+# Application
+###
+add_executable(Application
+  src/main.cpp
+)
+
+target_include_directories(Application PRIVATE "include")
+target_link_libraries(Application PUBLIC tracy PRIVATE ParticleSystem project_options project_warnings)
+
+if(MSVC)
+    set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT Application)
+endif()
 
 
 if (EXISTS "${PROJECT_SOURCE_DIR}/solution")
