@@ -5,6 +5,7 @@ A small graphical interface is provided for visually editing parameters.
 
 Här är min ändring för att det ska hända något.
 Mvh Herman
+FeatureA
 
 #### Folder structure
 
