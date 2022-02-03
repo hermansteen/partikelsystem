@@ -7,7 +7,7 @@
 
 /// This namespace contains objects that are helper functions that support the rendering
 /// of general ui elements, particles, emitters, and forces.
-namespace rendering {
+namespace Rendering {
 
 /*
  * These following structures are passed to the update functions further down in this file

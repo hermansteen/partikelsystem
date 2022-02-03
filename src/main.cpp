@@ -17,15 +17,15 @@ float srnd() {
 }
 
 int main(int, char**) {
-    rendering::createWindow();
+    Rendering::createWindow();
 
     ParticleSystem particleSystem;
 
     // --- EXAMPLE SNIPPET ---
     // Create some particle render info which is a simple struct that contains all visual properties used to render particles.
     // This is to exemplify the render[Particles/Emitters/Forces] functions
-    std::vector<rendering::ParticleInfo> particles(100);
-    for (rendering::ParticleInfo& particle : particles) {
+    std::vector<Rendering::ParticleInfo> particles(100);
+    for (Rendering::ParticleInfo& particle : particles) {
         particle.position = {srnd(), srnd()};     // Position between (-1,1) = Screen extent
         particle.color = {rnd(), rnd(), rnd()};   // Color between (0-1) per channel
         particle.radius = {1.0f + rnd() * 9.0f};  // Radius between (1.0-10.0)
@@ -36,7 +36,7 @@ int main(int, char**) {
     float speed = 1.0f;
     bool isRunning = true;
     while (isRunning) {
-        const float dt = rendering::beginFrame();
+        const float dt = Rendering::beginFrame();
         t += dt;
 
         particleSystem.update(dt * speed);
@@ -45,7 +45,7 @@ int main(int, char**) {
         // --- EXAMPLE SNIPPET ---
         // Create some global smooth rocking motion
         const vec2 vel = vec2(static_cast<float>(std::cos(t * 0.5)), -static_cast<float>(std::abs(std::sin(t * 0.5)))) * 0.2f;
-        for (rendering::ParticleInfo& particle : particles) {
+        for (Rendering::ParticleInfo& particle : particles) {
             // Apply per particle jitter
             const vec2 jitter = vec2(srnd(), srnd()) * 1.0f;
             particle.position += (vel + jitter) * dt * speed;
@@ -58,7 +58,7 @@ int main(int, char**) {
                 particle.radius = { 1.0f + rnd() * 9.0f };
             }
         }
-        rendering::renderParticles(particles);
+        Rendering::renderParticles(particles);
         // --- END EXAMPLE SNIPPET ---
 
         {
@@ -72,10 +72,10 @@ int main(int, char**) {
             }
         }
 
-        isRunning &= rendering::endFrame();
+        isRunning &= Rendering::endFrame();
     }
 
-    rendering::destroyWindow();
+    Rendering::destroyWindow();
 
     return EXIT_SUCCESS;
 }

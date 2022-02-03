@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+using namespace Rendering;
 
 
 // Dear students;
@@ -22,7 +23,7 @@
 // all documented so that looking at the source code should not be necessary.
 // Having said that, if you are interested in anything, of course continue browsing here
 
-namespace {
+namespace{
 
 // Holds the pointer to the active (and only) window
 GLFWwindow* _window = nullptr;
@@ -275,20 +276,20 @@ void createParticleGLObjects(GLuint& vao, GLuint& vbo) {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(rendering::ParticleInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ParticleInfo, position))
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Rendering::ParticleInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::ParticleInfo, position))
     );
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(rendering::ParticleInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ParticleInfo, radius))
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Rendering::ParticleInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::ParticleInfo, radius))
     );
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(rendering::ParticleInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ParticleInfo, color))
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(Rendering::ParticleInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::ParticleInfo, color))
     );
     glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(rendering::ParticleInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ParticleInfo, lifetime))
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Rendering::ParticleInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::ParticleInfo, lifetime))
     );
     glBindVertexArray(0);
 
@@ -448,16 +449,16 @@ void createEmitterGLObjects(GLuint& vao, GLuint& vbo) {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(rendering::EmitterInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::EmitterInfo, position))
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Rendering::EmitterInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::EmitterInfo, position))
     );
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(rendering::EmitterInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::EmitterInfo, size))
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Rendering::EmitterInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::EmitterInfo, size))
     );
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(rendering::EmitterInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::EmitterInfo, color))
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(Rendering::EmitterInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::EmitterInfo, color))
     );
     glBindVertexArray(0);
 
@@ -616,16 +617,16 @@ void createForceGLObjects(GLuint& vao, GLuint& vbo) {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(rendering::ForceInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ForceInfo, position))
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Rendering::ForceInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::ForceInfo, position))
     );
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(rendering::ForceInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ForceInfo, size))
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(Rendering::ForceInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::ForceInfo, size))
     );
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(rendering::ForceInfo),
-        reinterpret_cast<GLvoid*>(offsetof(rendering::ForceInfo, color))
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(Rendering::ForceInfo),
+        reinterpret_cast<GLvoid*>(offsetof(Rendering::ForceInfo, color))
     );
     glBindVertexArray(0);
 
@@ -663,7 +664,7 @@ std::chrono::time_point<std::chrono::high_resolution_clock> prevFrameTime;
 
 } // namespace
 
-namespace rendering {
+namespace Rendering {
 
 void createWindow() {
     ZoneScoped
