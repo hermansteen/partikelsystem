@@ -1,18 +1,18 @@
 #pragma once
 #include "util/vec2.h"
 #include "util/rendering.h"
+#include "Particle.h"
 
-class Emitter {
+class Emitter{
 public:
-    Emitter();
-
     Rendering::EmitterInfo render() const;
 
     void update(const float&);
 
-    ~Emitter() = default;
+    virtual std::vector<Particle> spawnParticles(const float&) = 0;
 
-private:
-    vec2 position;
+protected:
     Rendering::EmitterInfo infoStruct;
+    float t;
+    float t0;
 };

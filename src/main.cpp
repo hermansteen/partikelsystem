@@ -1,6 +1,6 @@
-#include "Tracy.hpp"
-#include "particlesystem.h"
-#include "util/rendering.h"
+#include "../ext/tracy/Tracy.hpp"
+#include "../include/particlesystem.h"
+#include "../include/util/rendering.h"
 
 #include <cmath>
 #include <cstdlib>
@@ -25,11 +25,13 @@ int main(int, char**) {
     // Create some particle render info which is a simple struct that contains all visual properties used to render particles.
     // This is to exemplify the render[Particles/Emitters/Forces] functions
     std::vector<Rendering::ParticleInfo> particles(100);
+    /*
     for (Rendering::ParticleInfo& particle : particles) {
         particle.position = {srnd(), srnd()};     // Position between (-1,1) = Screen extent
         particle.color = {rnd(), rnd(), rnd()};   // Color between (0-1) per channel
         particle.radius = {1.0f + rnd() * 9.0f};  // Radius between (1.0-10.0)
     }
+    */
     // --- END EXAMPLE SNIPPET ---
 
     double t = 0.0;
@@ -69,6 +71,10 @@ int main(int, char**) {
             ui::sliderFloat("Simulation speed", speed, 0.001f, 10.0f);
             if (ui::button("Close application")) {
                 isRunning = false;
+            }
+            if (ui::button("Add directional emitter")) {
+                particleSystem.addEmitter(new DirectionalEmitter(
+                    {{srnd(), srnd()}, 12.5f, Color(0.2f, 1.f, 0.8f)}, 0, 0.1, 0.1));
             }
         }
 
