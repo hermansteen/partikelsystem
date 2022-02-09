@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <iostream>
 
 // Simple random functions to get started
 // Random float (0,1)
@@ -24,7 +25,7 @@ int main(int, char**) {
     // --- EXAMPLE SNIPPET ---
     // Create some particle render info which is a simple struct that contains all visual properties used to render particles.
     // This is to exemplify the render[Particles/Emitters/Forces] functions
-    std::vector<Rendering::ParticleInfo> particles(100);
+    //std::vector<Rendering::ParticleInfo> particles(100);
     /*
     for (Rendering::ParticleInfo& particle : particles) {
         particle.position = {srnd(), srnd()};     // Position between (-1,1) = Screen extent
@@ -40,27 +41,25 @@ int main(int, char**) {
     while (isRunning) {
         const float dt = Rendering::beginFrame();
         t += dt;
-
         particleSystem.update(dt * speed);
         particleSystem.render();
 
         // --- EXAMPLE SNIPPET ---
         // Create some global smooth rocking motion
-        const vec2 vel = vec2(static_cast<float>(std::cos(t * 0.5)), -static_cast<float>(std::abs(std::sin(t * 0.5)))) * 0.2f;
-        for (Rendering::ParticleInfo& particle : particles) {
-            // Apply per particle jitter
-            const vec2 jitter = vec2(srnd(), srnd()) * 1.0f;
-            particle.position += (vel + jitter) * dt * speed;
-            // Check against extent of screen
-            if (particle.position.x < -1 || particle.position.x > 1 ||
-                particle.position.y < -1 || particle.position.y > 1) {
-                // Reset particle if outside
-                particle.position = { srnd(), srnd() };
-                particle.color = { rnd(), rnd(), rnd() };
-                particle.radius = { 1.0f + rnd() * 9.0f };
-            }
-        }
-        Rendering::renderParticles(particles);
+        //const vec2 vel = vec2(static_cast<float>(std::cos(t * 0.5)), -static_cast<float>(std::abs(std::sin(t * 0.5)))) * 0.2f;
+        //for (Rendering::ParticleInfo& particle : particles) {
+        //    // Apply per particle jitter
+        //    const vec2 jitter = vec2(srnd(), srnd()) * 1.0f;
+        //    particle.position += (vel + jitter) * dt * speed;
+        //    // Check against extent of screen
+        //    if (particle.position.x < -1 || particle.position.x > 1 ||
+        //        particle.position.y < -1 || particle.position.y > 1) {
+        //        // Reset particle if outside
+        //        particle.position = { srnd(), srnd() };
+        //        particle.color = { rnd(), rnd(), rnd() };
+        //        particle.radius = { 1.0f + rnd() * 9.0f };
+        //    }
+        //}
         // --- END EXAMPLE SNIPPET ---
 
         {
@@ -73,8 +72,8 @@ int main(int, char**) {
                 isRunning = false;
             }
             if (ui::button("Add directional emitter")) {
-                particleSystem.addEmitter(new DirectionalEmitter(
-                    {{srnd(), srnd()}, 12.5f, Color(0.2f, 1.f, 0.8f)}, 0, 0.1, 0.1));
+                particleSystem.addEmitter(
+                    new DirectionalEmitter(particleSystem.particles, 2 * 3.14f));
             }
         }
 

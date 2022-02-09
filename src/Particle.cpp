@@ -3,7 +3,7 @@
 
 Particle::Particle(vec2 inVelocity, float inLifeTime, vec2 inPosition, Color inColor) {
     velocity = inVelocity;
-    Rendering::ParticleInfo infoStruct = {inPosition, 2.f, inColor, inLifeTime};
+    infoStruct = {inPosition, 10.f, inColor, inLifeTime};
 }
 
 void Particle::update(const float& dt){

@@ -9,10 +9,14 @@ public:
 
     void update(const float&);
 
-    virtual std::vector<Particle> spawnParticles(const float&) = 0;
+    virtual void spawnParticles(const float&) = 0;
 
 protected:
+    Emitter(std::vector<Particle>& _particles) : particles{_particles} {}
+
     Rendering::EmitterInfo infoStruct;
-    float t;
-    float t0;
+    float t = 0;
+    float particleSpawnRate = 0.5;
+
+    std::vector<Particle>& particles;
 };

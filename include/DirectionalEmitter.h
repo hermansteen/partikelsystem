@@ -3,10 +3,18 @@
 
 class DirectionalEmitter : public Emitter {
 public:
-    DirectionalEmitter(Rendering::EmitterInfo const, float, float, const float);
+    DirectionalEmitter() = default;
 
-    std::vector<Particle> spawnParticles(const float&) override;
+        DirectionalEmitter(std::vector<Particle> & _particles, float _angle)
+        : Emitter(_particles) {
+        setAngle(_angle);
+    }
+
+    void setAngle(const float&);
+
+    void spawnParticles(const float&) override;
 
 private:
     float velocityAngle;
+    bool first = true;
 };

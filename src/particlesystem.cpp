@@ -3,6 +3,7 @@
 #include "../ext/tracy/Tracy.hpp"
 #include <cmath>
 #include <random>
+#include <iostream>
 
 namespace {
 constexpr float Pi = 3.141592654f;
@@ -25,6 +26,10 @@ void ParticleSystem::update(float dt) {
                        }),
         particles.end());
 
+    for (Particle& partikel : particles) {
+        partikel.update(dt);
+    }
+
     for (Emitter* emil : emitters) {
         emil->update(dt);
     }
@@ -35,12 +40,16 @@ void ParticleSystem::render() {
     std::vector<Rendering::ParticleInfo> particleRenders{};
     for (const Particle& p : particles) {
         particleRenders.push_back(p.render());
+        // std::cout << p.getPosition().x << ", " << p.getPosition().y << "\n";
     }
 
     std::vector<Rendering::EmitterInfo> emitterRenders{};
     for (const Emitter* e : emitters) {
         emitterRenders.push_back(e->render());
     }
+
+    Rendering::renderEmitters(emitterRenders);
+    Rendering::renderParticles(particleRenders);
 }
 
 void ParticleSystem::addEmitter(Emitter* e) { emitters.push_back(e); }

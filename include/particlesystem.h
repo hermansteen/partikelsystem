@@ -20,8 +20,8 @@ public:
 
     void addDirectional(vec2 position);
 
-private:
     std::vector<Particle> particles;
+private:
     std::vector<Emitter*> emitters;
     std::vector<Effect*> effects;
 };
