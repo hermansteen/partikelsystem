@@ -14,6 +14,8 @@ public:
 protected:
     Emitter(std::vector<Particle>& _particles) : particles{_particles} {}
 
+    void setPosition(const vec2&);
+
     Rendering::EmitterInfo infoStruct;
     float t = 0;
     float particleSpawnRate = 0.5;

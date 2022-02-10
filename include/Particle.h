@@ -15,6 +15,8 @@ public:
 
     Rendering::ParticleInfo render() const;
 
+    void setAcceleration(const vec2& _acceleration);
+
 private:
     bool isAlive = true;
     vec2 velocity;

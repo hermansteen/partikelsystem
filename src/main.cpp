@@ -44,6 +44,8 @@ int main(int, char**) {
         particleSystem.update(dt * speed);
         particleSystem.render();
 
+        std::cout << "nr of particles:" << particleSystem.numberOfParticles() << "\n";
+
         // --- EXAMPLE SNIPPET ---
         // Create some global smooth rocking motion
         //const vec2 vel = vec2(static_cast<float>(std::cos(t * 0.5)), -static_cast<float>(std::abs(std::sin(t * 0.5)))) * 0.2f;
@@ -73,7 +75,11 @@ int main(int, char**) {
             }
             if (ui::button("Add directional emitter")) {
                 particleSystem.addEmitter(
-                    new DirectionalEmitter(particleSystem.particles, 2 * 3.14f));
+                    new DirectionalEmitter(particleSystem.particles, 2 * 3.14f, {srnd(), srnd()}));
+            }
+            if (ui::button("Add Uniform emitter")) {
+                particleSystem.addEmitter(
+                    new UniformEmitter(particleSystem.particles, {srnd(), srnd()}));
             }
         }
 
