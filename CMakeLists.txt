@@ -88,6 +88,8 @@ set(HEADER_FILES
   include/DirectionalEmitter.h
   include/Effect.h
   include/Particle.h
+  include/Effect.h
+  include/GravityWell.h
 )
 
 set(SOURCE_FILES
@@ -97,6 +99,8 @@ set(SOURCE_FILES
   src/DirectionalEmitter.cpp
   src/Emitter.cpp
   src/Particle.cpp
+  src/GravityWell.cpp
+  src/Effect.cpp
 )
 
 add_library(ParticleSystem

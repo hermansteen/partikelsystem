@@ -53,3 +53,5 @@ void ParticleSystem::render() {
 }
 
 void ParticleSystem::addEmitter(Emitter* e) { emitters.push_back(e); }
+
+int ParticleSystem::numberOfParticles() { return particles.size(); }

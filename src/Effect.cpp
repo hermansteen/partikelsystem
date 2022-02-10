@@ -1,5 +1,3 @@
 #include "../include/Effect.h"
 
-Effect::Effect() {
-
-}
+Rendering::ForceInfo Effect::render() const { return infoStruct; }

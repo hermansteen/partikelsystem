@@ -8,6 +8,7 @@
 #include "../include/Particle.h"
 #include "../include/Effect.h"
 #include "../include/DirectionalEmitter.h"
+#include "../include/UniformEmitter.h"
 
 class ParticleSystem {
 public:
@@ -19,6 +20,8 @@ public:
     void addEmitter(Emitter* e);
 
     void addDirectional(vec2 position);
+
+    int numberOfParticles();
 
     std::vector<Particle> particles;
 private:
