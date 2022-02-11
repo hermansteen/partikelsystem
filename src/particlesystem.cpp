@@ -11,26 +11,30 @@ const float Tau = 2.f * Pi;
 }  // namespace
 
 ParticleSystem::ParticleSystem() {
-    particles = {};
-    emitters = {};
-    effects = {};
+    _particles = {};
+    _emitters = {};
+    _effects = {};
 }
 
 void ParticleSystem::update(float dt) {
     // @TODO: Update the state of the particle system, move particles forwards, spawn new
     // particles, destroy old particles, and apply effects
-    particles.erase(
-        std::remove_if(particles.begin(), particles.end(),
+    _particles.erase(
+        std::remove_if(_particles.begin(), _particles.end(),
                        [](const Particle& p) {
                            return !p.isParticleAlive();  // remove if particle is not alive
                        }),
-        particles.end());
+        _particles.end());
 
-    for (Particle& partikel : particles) {
+    for (Particle& partikel : _particles) {
+        for (Effect* effekt : _effects) {
+            vec2 force = effekt->calculateForce(partikel.getPosition());
+            partikel.setForce(force);
+        }
         partikel.update(dt);
     }
 
-    for (Emitter* emil : emitters) {
+    for (Emitter* emil : _emitters) {
         emil->update(dt);
     }
 }
@@ -38,13 +42,13 @@ void ParticleSystem::update(float dt) {
 void ParticleSystem::render() {
     // @TODO: Render the particles, emitters and what not contained within the system
     std::vector<Rendering::ParticleInfo> particleRenders{};
-    for (const Particle& p : particles) {
+    for (const Particle& p : _particles) {
         particleRenders.push_back(p.render());
         // std::cout << p.getPosition().x << ", " << p.getPosition().y << "\n";
     }
 
     std::vector<Rendering::EmitterInfo> emitterRenders{};
-    for (const Emitter* e : emitters) {
+    for (const Emitter* e : _emitters) {
         emitterRenders.push_back(e->render());
     }
 
@@ -52,6 +56,6 @@ void ParticleSystem::render() {
     Rendering::renderParticles(particleRenders);
 }
 
-void ParticleSystem::addEmitter(Emitter* e) { emitters.push_back(e); }
+void ParticleSystem::addEmitter(Emitter* e) { _emitters.push_back(e); }
 
-int ParticleSystem::numberOfParticles() { return particles.size(); }
+int ParticleSystem::numberOfParticles() { return _particles.size(); }

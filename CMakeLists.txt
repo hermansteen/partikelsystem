@@ -90,6 +90,7 @@ set(HEADER_FILES
   include/Particle.h
   include/Effect.h
   include/GravityWell.h
+  include/UniformEmitter.h
 )
 
 set(SOURCE_FILES
@@ -101,6 +102,7 @@ set(SOURCE_FILES
   src/Particle.cpp
   src/GravityWell.cpp
   src/Effect.cpp
+  src/UniformEmitter.cpp
 )
 
 add_library(ParticleSystem

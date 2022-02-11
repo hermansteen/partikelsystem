@@ -4,13 +4,20 @@
 
 class Effect {
 public:
-    Effect(const std::vector<Particle>& _particles) : particles{_particles} {};
+    Effect() : _isActive{true} {};
 
-    virtual void update(const float&) = 0;
+    Effect(const std::vector<Particle>& particles) : _particles{particles} {};
+
+    virtual vec2 calculateForce(const vec2&) = 0;
+
+    void setActive(bool active) { _isActive = active; }
 
     Rendering::ForceInfo render() const;
 
+    bool isActive();
+
 protected:
-    std::vector<Particle> particles;
-    Rendering::ForceInfo infoStruct;
+    std::vector<Particle> _particles;
+    Rendering::ForceInfo _infoStruct;
+    bool _isActive;
 };

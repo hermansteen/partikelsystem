@@ -24,4 +24,4 @@ vec2 Particle::getPosition() const { return infoStruct.position; }
 
 Rendering::ParticleInfo Particle::render() const { return infoStruct; }
 
-void Particle::setAcceleration(const vec2& _acceleration) { acceleration = _acceleration; }
+void Particle::setForce(const vec2& _force) { force = _force; }

@@ -19,14 +19,12 @@ public:
 
     void addEmitter(Emitter* e);
 
-    void addDirectional(vec2 position);
-
     int numberOfParticles();
 
-    std::vector<Particle> particles;
+    std::vector<Particle> _particles;
 private:
-    std::vector<Emitter*> emitters;
-    std::vector<Effect*> effects;
+    std::vector<Emitter*> _emitters;
+    std::vector<Effect*> _effects;
 };
 
 #endif // __PARTICLESYSTEM_H__
