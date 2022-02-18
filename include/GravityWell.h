@@ -4,12 +4,14 @@
 
 class GravityWell : public Effect {
 public:
-    GravityWell() : Effect() {};
+    GravityWell() : Effect() { _strength = 100000.f; };
 
     vec2 calculateForce(const vec2&) override;
 
-
+    void toggle();
 
 private:
-    float _G = 6.674f * pow(19,-11);
+    const float _G = 4.323e-5f;  // gravitational force 
+    bool _pull = true;
+    float _strength;
 };

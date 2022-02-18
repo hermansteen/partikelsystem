@@ -9,6 +9,7 @@
 #include "../include/Effect.h"
 #include "../include/DirectionalEmitter.h"
 #include "../include/UniformEmitter.h"
+#include "../include/GravityWell.h"
 
 class ParticleSystem {
 public:
@@ -18,6 +19,8 @@ public:
     void render();
 
     void addEmitter(Emitter* e);
+
+    void addEffect(Effect* e);
 
     int numberOfParticles();
 

@@ -52,10 +52,18 @@ void ParticleSystem::render() {
         emitterRenders.push_back(e->render());
     }
 
+    std::vector<Rendering::ForceInfo> effectRenders {};
+    for (const Effect* e : _effects) {
+        effectRenders.push_back(e->render());
+    }
+
     Rendering::renderEmitters(emitterRenders);
     Rendering::renderParticles(particleRenders);
+    Rendering::renderForces(effectRenders);
 }
 
 void ParticleSystem::addEmitter(Emitter* e) { _emitters.push_back(e); }
 
 int ParticleSystem::numberOfParticles() { return _particles.size(); }
+
+void ParticleSystem::addEffect(Effect* e) { _effects.push_back(e); };

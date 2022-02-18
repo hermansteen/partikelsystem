@@ -16,6 +16,7 @@ void Particle::update(const float& dt){
     if (infoStruct.lifetime < epsilon || std::abs(infoStruct.position.x) > 1.1f || std::abs(infoStruct.position.y) > 1.1f) {
         isAlive = false;
     }
+    acceleration = {0.0f,0.0f};
 }
 
 bool Particle::isParticleAlive() const { return isAlive; }
@@ -24,4 +25,4 @@ vec2 Particle::getPosition() const { return infoStruct.position; }
 
 Rendering::ParticleInfo Particle::render() const { return infoStruct; }
 
-void Particle::setForce(const vec2& _force) { force = _force; }
+void Particle::setForce(const vec2& _force) { acceleration += _force; }

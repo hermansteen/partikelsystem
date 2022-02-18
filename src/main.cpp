@@ -75,11 +75,14 @@ int main(int, char**) {
             }
             if (ui::button("Add directional emitter")) {
                 particleSystem.addEmitter(
-                    new DirectionalEmitter(particleSystem.particles, 2 * 3.14f, {srnd(), srnd()}));
+                    new DirectionalEmitter(particleSystem._particles, 2 * 3.14f, {srnd(), srnd()}));
             }
             if (ui::button("Add Uniform emitter")) {
                 particleSystem.addEmitter(
-                    new UniformEmitter(particleSystem.particles, {srnd(), srnd()}));
+                    new UniformEmitter(particleSystem._particles, {srnd(), srnd()}));
+            }
+            if (ui::button("Add GravityWell Effect")) {
+                particleSystem.addEffect(new GravityWell());
             }
         }
 
