@@ -1,5 +1,5 @@
 #include "../include/Effect.h"
 
-Effect::Effect() {
+Rendering::ForceInfo Effect::render() const { return _infoStruct; }
 
-}
+bool Effect::isActive() const { return _isActive; }

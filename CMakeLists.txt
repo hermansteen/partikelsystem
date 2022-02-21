@@ -84,11 +84,27 @@ set_property(TARGET glad PROPERTY FOLDER "External")
 set(HEADER_FILES
   include/particlesystem.h
   include/util/rendering.h
+  include/Emitter.h
+  include/DirectionalEmitter.h
+  include/Effect.h
+  include/Particle.h
+  include/Effect.h
+  include/GravityWell.h
+  include/UniformEmitter.h
+  include/WindEffect.h
 )
 
 set(SOURCE_FILES
   src/particlesystem.cpp
   src/util/rendering.cpp
+  src/Effect.cpp
+  src/DirectionalEmitter.cpp
+  src/Emitter.cpp
+  src/Particle.cpp
+  src/GravityWell.cpp
+  src/Effect.cpp
+  src/UniformEmitter.cpp
+  src/WindEffect.cpp
 )
 
 add_library(ParticleSystem

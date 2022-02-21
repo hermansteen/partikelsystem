@@ -15,9 +15,12 @@ public:
 
     Rendering::ParticleInfo render() const;
 
+    void setForce(const vec2& _acceleration);
+
 private:
     bool isAlive = true;
     vec2 velocity;
+    vec2 force;
     vec2 acceleration;
     Rendering::ParticleInfo infoStruct;
 };

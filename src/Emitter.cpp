@@ -1,11 +1,10 @@
 #include "../include/Emitter.h"
 
-Emitter::Emitter() {
-
-}
-
 Rendering::EmitterInfo Emitter::render() const { return infoStruct; }
 
 void Emitter::update(const float& dt) {
-	//@TODO uppdatera nån grej typ
+    spawnParticles(dt);
+    t += dt;
 }
+
+void Emitter::setPosition(const vec2& position) { infoStruct.position = position; }
