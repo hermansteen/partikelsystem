@@ -12,6 +12,7 @@
 # Stages run in sequential order, but jobs within stages run in parallel.
 #
 # For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+image: gcc
 
 stages:          # List of stages for jobs, and their order of execution
   - build
@@ -22,7 +23,11 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Compiling the code..."
+    - g++ particlesystem.cpp -o binary
     - echo "Compile complete."
+  artifacts:
+        paths:
+            - binary
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
