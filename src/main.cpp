@@ -37,6 +37,7 @@ int main(int, char**) {
 
     double t = 0.0;
     float speed = 1.0f;
+    float windspeed = 5000.0f;
     bool isRunning = true;
     while (isRunning) {
         const float dt = Rendering::beginFrame();
@@ -70,9 +71,7 @@ int main(int, char**) {
             // @TODO: Replace this example code with your own UI elements
             ui::text("I'm text!");
             ui::sliderFloat("Simulation speed", speed, 0.001f, 10.0f);
-            if (ui::button("Close application")) {
-                isRunning = false;
-            }
+            ui::sliderFloat("Wind speed", windspeed, 100.f, 10000.f);
             if (ui::button("Add directional emitter")) {
                 particleSystem.addEmitter(
                     new DirectionalEmitter(particleSystem._particles, 2 * 3.14f, {srnd(), srnd()}));
@@ -83,6 +82,12 @@ int main(int, char**) {
             }
             if (ui::button("Add GravityWell Effect")) {
                 particleSystem.addEffect(new GravityWell());
+            }
+            if (ui::button("Add Wind Effect")) {
+                particleSystem.addEffect(new WindEffect(vec2{srnd(), srnd()}, vec2{1.0f, 0.15f}, windspeed));
+            }
+            if (ui::button("Close application")) {
+                isRunning = false;
             }
         }
 

@@ -10,6 +10,7 @@
 #include "../include/DirectionalEmitter.h"
 #include "../include/UniformEmitter.h"
 #include "../include/GravityWell.h"
+#include "../include/WindEffect.h"
 
 class ParticleSystem {
 public:
