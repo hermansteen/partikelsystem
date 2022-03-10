@@ -9,7 +9,7 @@
 //    particles = {inVector};
 //}
 
-void DirectionalEmitter::spawnParticles(const float& dt) {
+void DirectionalEmitter::spawnParticles() {
     if (t > particleSpawnRate) {
         float angle = velocityAngle / 6.28f;
         vec2 velocity = {cos(angle), sin(angle)};

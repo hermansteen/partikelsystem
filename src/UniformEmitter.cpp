@@ -1,6 +1,6 @@
 #include "UniformEmitter.h"
 
-void UniformEmitter::spawnParticles(const float& dt) {
+void UniformEmitter::spawnParticles() {
     if (t > particleSpawnRate) {
         const int n = 16;  // number of particles to spawn per "wave"
         for (int i = 0; i < n; i++) {

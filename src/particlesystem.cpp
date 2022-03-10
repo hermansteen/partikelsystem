@@ -64,6 +64,6 @@ void ParticleSystem::render() {
 
 void ParticleSystem::addEmitter(Emitter* e) { _emitters.push_back(e); }
 
-int ParticleSystem::numberOfParticles() { return _particles.size(); }
+size_t ParticleSystem::numberOfParticles() { return _particles.size(); }
 
 void ParticleSystem::addEffect(Effect* e) { _effects.push_back(e); };

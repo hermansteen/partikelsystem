@@ -11,4 +11,4 @@ vec2 GravityWell::calculateForce(const vec2& particlePosition) {
         return forceDirection.normalized() * _G * _strength / (r * r);
 }
 
-void GravityWell::toggle() { _pull != _pull; }
+void GravityWell::toggle() { _pull = !_pull; }

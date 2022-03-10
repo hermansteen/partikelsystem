@@ -6,5 +6,5 @@ public:
         setPosition(_position);
     };
 
-    void spawnParticles(const float&) override;
+    void spawnParticles() override;
 };

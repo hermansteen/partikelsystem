@@ -23,7 +23,7 @@ public:
 
     void addEffect(Effect* e);
 
-    int numberOfParticles();
+    size_t numberOfParticles();
 
     std::vector<Particle> _particles;
 private:

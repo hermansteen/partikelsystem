@@ -1,2 +1,12 @@
 build/
 bin/
+
+release/x64/x64/Debug/ZERO_CHECK/
+
+release/x64/ParticleSystem.dir/Debug/
+
+release/x64/Debug/
+
+release/x64/CMakeFiles/3.23.0-rc1/CompilerIdC/Debug/CompilerIdC.tlog/
+
+release/x64/

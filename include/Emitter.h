@@ -9,7 +9,7 @@ public:
 
     void update(const float&);
 
-    virtual void spawnParticles(const float&) = 0;
+    virtual void spawnParticles() = 0;
 
 protected:
     Emitter(std::vector<Particle>& _particles) : particles{_particles} {}

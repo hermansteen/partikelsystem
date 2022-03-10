@@ -13,7 +13,7 @@ public:
 
     void setAngle(const float&);
 
-    void spawnParticles(const float&) override;
+    void spawnParticles() override;
 
 private:
     float velocityAngle;
