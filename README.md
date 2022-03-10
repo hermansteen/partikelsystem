@@ -3,12 +3,6 @@
 A minimal particle system acting as a foundation for the course labs.
 A small graphical interface is provided for visually editing parameters.
 
-Här är min ändring för att det ska hända något.
-Mvh Herman
-FeatureB
-
-###Jättefin utvecklad feature
-
 #### Folder structure
 
 - /ext: External dependencies
